@@ -1,8 +1,5 @@
 cmake_minimum_required(VERSION 3.5) # 指定能够支持本文件的 CMake 最低版本
 
-# set (CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -pthread -v")
-# set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -v")
-
 # 添加自定义 CMake 命令行宏，运行 CMake 时以 "-DGTEST_VERSION=1.7.0" 的形式调用
 add_compile_definitions(COMPILER=${COMPILER})
 add_compile_definitions(GTEST_VERSION=${GTEST_VERSION})
