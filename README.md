@@ -14,28 +14,37 @@ I want to practice `CMake` with this project, so it may have many defects or eve
 GTest-CMake-example$ tree
 .
 ├── CMakeLists.txt
-├── build
-├── include
-│   ├── 1.7.0
-│   │   └── gtest
-│   ├── 1.10.0
-│   │   └── gtest
-│   ├── fib.h
-│   └── fac.h
-├── lib
-│   ├── 1.7.0
-│   │   ├── clang
-│   │   ├── x64
-│   │   └── x86
-│   └── 1.10.0
-│       ├── clang
-│       ├── x64
-│       └── x86
-│   
-└── src
-    ├── main.cpp
-    ├── fib.cpp
-    └── fac.cpp
+├── factorial
+│   ├── CMakeLists.txt
+│   ├── include
+│   │   └── fac.h
+│   └── src
+│       └── fac.cpp
+├── fibonacci
+│   ├── CMakeLists.txt
+│   ├── include
+│   │   └── fib.h
+│   └── src
+│       └── fib.cpp
+└── test
+    ├── CMakeLists.txt
+    ├── include
+    │   ├── 1.7.0
+    │   │   └── gtest
+    │   └── 1.10.0
+    │       └── gtest
+    ├── lib
+    │   ├── 1.7.0
+    │   │   ├── clang
+    │   │   ├── x64
+    │   │   └── x86
+    │   └── 1.10.0
+    │       ├── clang
+    │       ├── x64
+    │       └── x86
+    └── src
+        └── main.cpp
+
 ```
 
 ## Environment
@@ -54,7 +63,7 @@ I've customized three options to select `complier`, `GTest sersion`, `64bits or 
 | `GTEST_VERSION`   |   `1.7.0` `1.10.0`|
 | `GTEST_BITS`   |   `x64` `x86`|
 
-You can use `-D<OPTION_NAME>="XXX"` to specify them. The value for options is **case insensitive**.
+You can use `-D<OPTION_NAME>="Value"` to specify them. The value for options is **case insensitive**.
 
 **Note:** 
 1. I don't compile this project by other compiler.
