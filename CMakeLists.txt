@@ -2,29 +2,37 @@
 cmake_minimum_required (VERSION 3.5)
 
 # 添加自定义 CMake 命令行宏，运行 CMake 时以 "-DGTEST_VERSION=1.7.0" 的形式调用
-add_compile_definitions(GTEST_VERSION="1.7.0")
-add_compile_definitions(GTEST_BITS="x64")
+add_compile_definitions (GTEST_VERSION="1.7.0")
+add_compile_definitions (GTEST_BITS="x64")
 
 # 设置项目名
-project(gtest_cmake_example)
+project (gtest_cmake_example)
 
+# 设置构建类型
 set (CMAKE_BUILE_TYPE RELEASE)
 
-message(STATUS "GTEST_VERSION: ${GTEST_VERSION}")
-message(STATUS "GTEST_BITS: ${GTEST_BITS}")
+# 生成 compile_commands.json
+set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+# 设置 "make VERBOSE=1"，获取 make 过程的详细输出
+set (CMAKE_VERBOSE_MAKEFILE ON)
+
+message (STATUS "CMAKE_BUILE_TYPE DEBUG: ${CMAKE_BUILE_TYPE}")
+message (STATUS "GTEST_VERSION: ${GTEST_VERSION}")
+message (STATUS "GTEST_BITS: ${GTEST_BITS}")
 
 if (${GTEST_BITS} STREQUAL "x86") # CMake字符串操作符必须大写
     if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-        message(FATAL_ERROR "FATAL: When use Clang, the option \"GTEST_BITS\" can only be \"x64\"!")
+        message (FATAL_ERROR "FATAL: When use Clang, the option \"GTEST_BITS\" can only be \"x64\"!")
     elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         set (GTEST_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/test/include/${GTEST_VERSION})
         set (GTEST_LIBRARY ${PROJECT_SOURCE_DIR}/test/lib/${GTEST_VERSION}/${GTEST_BITS}/libgtest.a)
         set (GTEST_MAIN_LIBRARY ${PROJECT_SOURCE_DIR}/test/lib/${GTEST_VERSION}/${GTEST_BITS}/libgtest_main.a)
-        message(STATUS "STATUS: Using GCC!")
+        message (STATUS "STATUS: Using GCC!")
     elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        message(FATAL_ERROR "FATAL: If you use MSVC, you should compile the static link library yourself!")
+        message (FATAL_ERROR "FATAL: If you use MSVC, you should compile the static link library yourself!")
     else ()
-        message(FATAL_ERROR "FATAL: Only support Clang and GCC!")
+        message (FATAL_ERROR "FATAL: Only support Clang and GCC!")
     endif()
     add_compile_options(-m32)
     add_link_options(-m32)
@@ -37,7 +45,7 @@ if (${GTEST_BITS} STREQUAL "x86") # CMake字符串操作符必须大写
     # target_link_options(fibonacci PRIVATE -m32)    
     # set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
     # set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
-    message(STATUS "OPTIONAL: -m32")
+    message (STATUS "OPTIONAL: -m32")
 elseif (${GTEST_BITS} STREQUAL "x64")
     if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         set (GTEST_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/test/include/${GTEST_VERSION})
@@ -51,15 +59,15 @@ elseif (${GTEST_BITS} STREQUAL "x64")
         # target_link_options(factorial PRIVATE -pthread)
         # target_compile_options(fibonacci PRIVATE -fsjlj-exceptions)
         # target_link_options(fibonacci PRIVATE -pthread)
-        message(STATUS "STATUS: Using Clang!")
+        message (STATUS "STATUS: Using Clang!")
     elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         set (GTEST_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/test/include/${GTEST_VERSION})
         set (GTEST_LIBRARY ${PROJECT_SOURCE_DIR}/test/lib/${GTEST_VERSION}/${GTEST_BITS}/libgtest.a)
         set (GTEST_MAIN_LIBRARY ${PROJECT_SOURCE_DIR}/test/lib/${GTEST_VERSION}/${GTEST_BITS}/libgtest_main.a)
-        message(STATUS "STATUS: Using GCC!")
+        message (STATUS "STATUS: Using GCC!")
     else ()
-        message(STATUS ${CMAKE_CXX_COMPILER_ID})
-        message(FATAL_ERROR "FATAL: Only support Clang and GCC!")
+        message (STATUS ${CMAKE_CXX_COMPILER_ID})
+        message (FATAL_ERROR "FATAL: Only support Clang and GCC!")
     endif()
     add_compile_options(-m64)
     add_link_options(-m64)
@@ -71,15 +79,12 @@ elseif (${GTEST_BITS} STREQUAL "x64")
     # target_link_options(fibonacci PRIVATE -m64)
     # set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m64")
     # set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64")
-    message(STATUS "OPTIONAL: -m64")
+    message (STATUS "OPTIONAL: -m64")
 else ()
-    message(FATAL_ERROR "FATAL: The option \"GTEST_BITS\" can only be \"x86\" or \"x64\"!")
+    message (FATAL_ERROR "FATAL: The option \"GTEST_BITS\" can only be \"x86\" or \"x64\"!")
 endif ()
 
 # 添加子项目
-add_subdirectory(factorial)
-add_subdirectory(fibonacci)
-add_subdirectory(test)
-
-# 设置 "make VERBOSE=1"，获取 make 过程的详细输出
-set (CMAKE_VERBOSE_MAKEFILE ON)
+add_subdirectory (factorial)
+add_subdirectory (fibonacci)
+add_subdirectory (test)

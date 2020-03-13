@@ -14,6 +14,8 @@ I want to practice `CMake` with this project, so it may have many defects or eve
 GTest-CMake-example$ tree
 .
 ├── CMakeLists.txt
+├── clang.cmake
+├── gcc.cmake
 ├── factorial
 │   ├── CMakeLists.txt
 │   ├── include
@@ -55,12 +57,12 @@ GTest-CMake-example$ tree
 
 ## Build
 
-I've customized three options to select `GTest version`, `64bits or 32bits`.
+I've customized three options to select `GTest version` and `64bits` or `32bits`.
 
 | Option Name  | Value  |
 |    ----      | ----   |
-| `GTEST_VERSION`   |   `1.7.0` `1.10.0`|
-| `GTEST_BITS`   |   `x64` `x86`|
+| `GTEST_VERSION`   |   `1.7.0` or `1.10.0`|
+| `GTEST_BITS`   |   `x64` or `x86`|
 
 You can use `-D<OPTION_NAME>="Value"` to specify them. The value for options is **case insensitive**.
 
@@ -104,3 +106,4 @@ mingw-32-make install
     - `dwarf` to use `-fdwarf-excetions`
 3. `GTest-1.10.0` may not support colorful output for `Windows PowerShell` and `cmd`.
 4. The older binary releases of MinGW-w64 have an incompatibility with Clang 8.0+'s float.h. To fix this, copy [this specific revision of float.h](https://github.com/mirror/mingw-w64/raw/82b169c5734a6198d3b4c51a48f82e7b7104f143/mingw-w64-headers/crt/float.h) into the correct location and use it. (from [StackOverflow](https://stackoverflow.com/questions/57166340/how-do-i-compile-code-using-clang-with-the-mingw-c-c-library-particular-issu))
+5. You can alse use `-DCMAKE_TOOLCHAIN_FILE="../gcc.cmake"` or `-DCMAKE_TOOLCHAIN_FILE="../clang.cmake"` to specify target and cross compile. 
