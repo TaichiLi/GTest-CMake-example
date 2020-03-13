@@ -55,11 +55,10 @@ GTest-CMake-example$ tree
 
 ## Build
 
-I've customized three options to select `complier`, `GTest sersion`, `64bits or 32bits`.
+I've customized three options to select `GTest version`, `64bits or 32bits`.
 
 | Option Name  | Value  |
 |    ----      | ----   |
-| `COMPILER`   |   `clang` `gcc`|
 | `GTEST_VERSION`   |   `1.7.0` `1.10.0`|
 | `GTEST_BITS`   |   `x64` `x86`|
 
@@ -68,6 +67,7 @@ You can use `-D<OPTION_NAME>="Value"` to specify them. The value for options is 
 **Note:** 
 1. I don't compile this project by other compiler.
 2. `Clang` only supports `x64`.
+3. If you use `MSVC`, you should compile the static link library yourself.
 
 ### MinGW Makefiles
 
@@ -81,13 +81,19 @@ cd build
 then run `CMake` to generate `MinGW Makefiles` ..
 
 ```
-cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release  -DGTEST_VERSION="1.7.0" -DGTEST_BITS="x64" -DCOMPILER="clang" ..
+cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="../install" -DGTEST_VERSION="1.7.0" -DGTEST_BITS="x64" ..
 ```
 
-finally just build project
+after that just build project
 
 ```
 mingw32-make
+```
+
+finally you can install the project
+
+```
+mingw-32-make install
 ```
 
 ## Notes
@@ -96,4 +102,5 @@ mingw32-make
 2. If your compiler's exception handling model isn't `sjlj`, you should change clang's compile option `-fsjlj-excetions`,
     - `seh` to use `-fseh-excetions`
     - `dwarf` to use `-fdwarf-excetions`
-3. The older binary releases of MinGW-w64 have an incompatibility with Clang 8.0+'s float.h. To fix this, copy [this specific revision of float.h](https://github.com/mirror/mingw-w64/raw/82b169c5734a6198d3b4c51a48f82e7b7104f143/mingw-w64-headers/crt/float.h) into the correct location and use it. (from [StackOverflow](https://stackoverflow.com/questions/57166340/how-do-i-compile-code-using-clang-with-the-mingw-c-c-library-particular-issu))
+3. `GTest-1.10.0` may not support colorful output for `Windows PowerShell` and `cmd`.
+4. The older binary releases of MinGW-w64 have an incompatibility with Clang 8.0+'s float.h. To fix this, copy [this specific revision of float.h](https://github.com/mirror/mingw-w64/raw/82b169c5734a6198d3b4c51a48f82e7b7104f143/mingw-w64-headers/crt/float.h) into the correct location and use it. (from [StackOverflow](https://stackoverflow.com/questions/57166340/how-do-i-compile-code-using-clang-with-the-mingw-c-c-library-particular-issu))

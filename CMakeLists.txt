@@ -2,27 +2,16 @@
 cmake_minimum_required (VERSION 3.5)
 
 # 添加自定义 CMake 命令行宏，运行 CMake 时以 "-DGTEST_VERSION=1.7.0" 的形式调用
-add_compile_definitions(USE_COMPILER="gcc")
 add_compile_definitions(GTEST_VERSION="1.7.0")
 add_compile_definitions(GTEST_BITS="x64")
-
-# 对之后的 target 设置编译器，因此必须在添加 target 之前设置，最好用命令行指定（这里嫌命令行麻烦）
-if (${USE_COMPILER} STREQUAL "clang") # CMake 字符串比较不区分大小写
-    SET (CMAKE_C_COMPILER   "clang")
-    SET (CMAKE_CXX_COMPILER "clang++")
-elseif (${USE_COMPILER} STREQUAL "gcc")
-    SET (CMAKE_C_COMPILER   "gcc")
-    SET (CMAKE_CXX_COMPILER "g++")
-endif()
 
 # 设置项目名
 project(gtest_cmake_example)
 
 set (CMAKE_BUILE_TYPE RELEASE)
 
-message(STATUS ${USE_COMPILER})
-message(STATUS ${GTEST_VERSION})
-message(STATUS ${GTEST_BITS})
+message(STATUS "GTEST_VERSION: ${GTEST_VERSION}")
+message(STATUS "GTEST_BITS: ${GTEST_BITS}")
 
 if (${GTEST_BITS} STREQUAL "x86") # CMake字符串操作符必须大写
     if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
@@ -32,6 +21,8 @@ if (${GTEST_BITS} STREQUAL "x86") # CMake字符串操作符必须大写
         set (GTEST_LIBRARY ${PROJECT_SOURCE_DIR}/test/lib/${GTEST_VERSION}/${GTEST_BITS}/libgtest.a)
         set (GTEST_MAIN_LIBRARY ${PROJECT_SOURCE_DIR}/test/lib/${GTEST_VERSION}/${GTEST_BITS}/libgtest_main.a)
         message(STATUS "STATUS: Using GCC!")
+    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        message(FATAL_ERROR "FATAL: If you use MSVC, you should compile the static link library yourself!")
     else ()
         message(FATAL_ERROR "FATAL: Only support Clang and GCC!")
     endif()
